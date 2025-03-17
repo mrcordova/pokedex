@@ -11,9 +11,9 @@ export function cleanInput(input: string): string[] {
     .filter((val) => val !== "");
 }
 
-export function startREPL(state: State) {
+export async function startREPL(state: State) {
   const { readline: rl, cmds } = state;
-  rl.on("line", (input) => {
+  rl.on("line", async (input) => {
     const arrResults = cleanInput(input);
     if (arrResults.length == 0) {
       rl.prompt();
@@ -26,7 +26,11 @@ export function startREPL(state: State) {
     if (!cmd) {
       stdout.write("Unknown command\n");
     }
-    cmd?.callback(state);
+    try {
+      await cmd?.callback(state);
+    } catch (error) {
+      console.error(error);
+    }
 
     rl.prompt();
   });
