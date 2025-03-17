@@ -17,13 +17,13 @@ export type State = {
   prevLocationsURL: string | null;
 };
 
-export function initState(): State {
+export function initState(cacheInterval: number): State {
   const rl = createInterface({
     input: stdin,
     output: stdout,
     prompt: "Pokedex > ",
   });
-  const pokeapi = new PokeAPI();
+  const pokeapi = new PokeAPI(cacheInterval);
   return {
     readline: rl,
     cmds: getCommands(),
