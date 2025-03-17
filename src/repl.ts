@@ -1,5 +1,7 @@
 import { createInterface } from "node:readline";
 import { stdin, stdout } from "node:process";
+import { getCommands } from "./command.js";
+
 export function cleanInput(input: string): string[] {
   return input
     .toLowerCase()
@@ -21,7 +23,28 @@ export function startREPL() {
       rl.prompt();
       return;
     }
-    stdout.write(`Your command was: ${arrResults[0]}\n`);
+    const cmds = getCommands();
+    const cmdName = arrResults[0];
+    const cmd = cmds[cmdName];
+
+    if (!cmd) {
+      stdout.write("Unknown command\n");
+    }
+    cmd?.callback(cmds);
+
+    //   if (cmds[cmd]) {
+
+    //   }
+
+    // if (cmds[cmd]?.name === "exit") {
+    //   cmds[cmd].callback(cmds);
+    // } else if (cmds[cmd]?.name === "help") {
+    //   cmds[cmd].callback(cmds);
+    // } else {
+    //
+    // }
+    // stdout.write(`Your command was: ${arrResults[0]}\n`);
+
     rl.prompt();
   });
 
