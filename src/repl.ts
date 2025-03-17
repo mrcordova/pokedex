@@ -22,12 +22,14 @@ export async function startREPL(state: State) {
     // const cmds = getCommands();
     const cmdName = arrResults[0];
     const cmd = cmds[cmdName];
+    let args: string[] = arrResults.slice(1);
 
     if (!cmd) {
       stdout.write("Unknown command\n");
     }
+
     try {
-      await cmd?.callback(state);
+      await cmd?.callback(state, ...args);
     } catch (error) {
       console.error(error);
     }
